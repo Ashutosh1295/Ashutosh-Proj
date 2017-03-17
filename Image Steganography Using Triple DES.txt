@@ -1,0 +1,9 @@
+Image Steganography Using Triple DES:
+
+A few changes have been made regarding the overall development of the project. The changes includes:
+
+1) Firstly, after the completion of encryption decryption part, some changes are ther in user interface which includes buttons and PictureBox. 
+2) Then working of Hide button is implemented.
+3) One test case is there for hide button to check if there isinput or not.
+4) Image Steganography using LSB technique is being implemented.
+ 
