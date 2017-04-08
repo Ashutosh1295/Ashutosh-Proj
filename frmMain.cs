@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Drawing.Imaging;
+using System.IO;
 using System.Text;
 using System.Windows.Forms;
 
@@ -10,14 +12,13 @@ namespace EnCryptDecrypt
 {
     public partial class frmMain : Form
     {
-        private Bitmap bmp = null;
-        private Bitmap bmpcopy = null;
+        public Bitmap bmp = null;
+        public Bitmap bmpcopy = null;
         public static string text1 = null;
         public frmMain()
         {
             InitializeComponent();
         }
-
         private void btnEncrypt_Click(object sender, EventArgs e)
         {
             if (txtClearText.Text == "")
@@ -26,6 +27,7 @@ namespace EnCryptDecrypt
             }
             else
             {
+                textBox1.Visible = false;
                 error.Clear();
                 string clearText = txtClearText.Text.Trim();
                 string cipherText = CryptorEngine.Encrypt(clearText, true);
@@ -43,7 +45,8 @@ namespace EnCryptDecrypt
             string decryptedText = CryptorEngine.Decrypt(cipherText, true);
             txtDecryptedText.Text = decryptedText;
             txtDecryptedText.Visible = true;
-            label3.Visible = true;            
+            label3.Visible = true;
+            textBox1.Visible = true;
         }
 
         private void txtDecryptedText_TextChanged(object sender, EventArgs e)
@@ -63,13 +66,13 @@ namespace EnCryptDecrypt
 
         private void pictureBox1_Click(object sender, EventArgs e)
         {
-            pictureBox1.Image = Image.FromFile("C:\\Users\\Ashutosh\\Pictures\\Saved Pictures\artboard_2_1x.png");
-            pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage;
+            
         }
 
         private void hide1_Click(object sender, EventArgs e)
         {
             bmp = (Bitmap)pictureBox1.Image;
+            bmpcopy = (Bitmap)bmp.Clone();
             string text = txtCipherText.Text;
             int number = 1;
             MessageBox.Show(text);
@@ -80,6 +83,10 @@ namespace EnCryptDecrypt
             else
             {
                 bmp = EnCryptDecrypt.SteganographyHelper.embedText(text, bmp, number);
+                if(bmp.Equals(bmpcopy))
+                {
+                    MessageBox.Show(" Success ");
+                }
                 MessageBox.Show("Your text was hidden in the image successfully!", "Done");
                 txtClearText.Visible = false;
                 txtCipherText.Visible = false;
@@ -91,7 +98,72 @@ namespace EnCryptDecrypt
 
         private void Extract_Click(object sender, EventArgs e)
         {
+            bmp = (Bitmap)pictureBox1.Image;
+            string cryptotext = null;
+            if (bmp == bmpcopy)
+            {
+                MessageBox.Show(" Success ");
+            }
+            else
+            {
+                cryptotext = EnCryptDecrypt.SteganographyHelper.extractText(bmp);
+                textBox1.Text = cryptotext;
+            }
+        }
 
+        private void textBox1_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void frmMain_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label3_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void toolStripContainer1_TopToolStripPanel_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void selectImageToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog open_dialog = new OpenFileDialog();
+            open_dialog.Filter = "Image Files (*.jpeg; *.png; *.bmp)|*.jpg; *.png; *.bmp";
+            if (open_dialog.ShowDialog() == DialogResult.OK)
+            {
+                pictureBox1.Image = Image.FromFile(open_dialog.FileName);
+            }
+        }
+
+        private void toolStripContainer1_ContentPanel_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void saveImageToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            SaveFileDialog save_dialog = new SaveFileDialog();
+            save_dialog.Filter = "Png Image|*.png|Bitmap Image|*.bmp";
+            if (save_dialog.ShowDialog() == DialogResult.OK)
+            {
+                switch (save_dialog.FilterIndex)
+                {
+                    case 0:
+                        {
+                            bmp.Save(save_dialog.FileName, ImageFormat.Png);
+                        } break;
+                    case 1:
+                        {
+                            bmp.Save(save_dialog.FileName, ImageFormat.Bmp);
+                        } break;
+                }
+            }
         }
     }
 }

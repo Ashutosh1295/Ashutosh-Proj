@@ -12,7 +12,7 @@ namespace EnCryptDecrypt
         /// Encrypt a string using dual encryption method. Return a encrypted cipher Text
         /// </summary>
         /// <param name="toEncrypt">string to be encrypted</param>
-        /// <param name="useHashing">use hashing? send to for extra security</param>
+        /// <param name="useHashing">use hashing? send to for extra secirity</param>
         /// <returns></returns>
         public static string Encrypt(string toEncrypt, bool useHashing)
         {

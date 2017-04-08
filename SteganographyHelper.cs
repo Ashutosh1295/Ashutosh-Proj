@@ -32,7 +32,7 @@ namespace EnCryptDecrypt
 
             // hold pixel elements
             int R = 0, G = 0, B = 0;
-
+            
             // pass through the rows
             for (int i = 0; i < bmp.Height; i++)
             {
@@ -123,7 +123,6 @@ namespace EnCryptDecrypt
                         }
 
                         pixelElementIndex++;
-
                         if (state == State.Filling_With_Zeros)
                         {
                             // increment the value of zeros until it is 8
@@ -131,6 +130,7 @@ namespace EnCryptDecrypt
                         }
                     }
                 }
+                MessageBox.Show(" Reached ");
             }
             return bmp;
         }
